@@ -1,6 +1,7 @@
 var express = require('express');
 const { registerUser, loginUser, deleteUser, updateWallet, updateDemo, getAllUsers, getAllUserBetTransactions, getAllUserGeneralTransactions, getUserDetail } = require('../controllers/user_controller');
 const { declareContestWingoResult, fetchContestsByDuration, fetchLatestContestTimes, placeWingoBet } = require('../controllers/wingo_controller');
+const { addUserWithdrawRequest, addAdminRecharge, checkUserRecharge, getUserWithdrawRequest, updateWithdrawRequest, addSubAdminUpi, getRechargeUpi } = require('../controllers/upi_controller');
 var router = express.Router();
 
 
@@ -14,6 +15,16 @@ router.get('/get-all-user',getAllUsers);
 router.post('/get-user-bet-transactions',getAllUserBetTransactions);
 router.post('/get-user-general-transactions',getAllUserGeneralTransactions);
 router.post('/get-user-detail',getUserDetail);
+
+// Upi-endpoints
+router.post('/red3577-UPI/add-withdraw-request',addUserWithdrawRequest);
+router.post('/red3577-UPI/add-admin-recharge',addAdminRecharge);
+router.post('/red3577-UPI/check-wallet-recharge',checkUserRecharge);
+router.post('/red3577-UPI/get-user-withdraws',getUserWithdrawRequest);
+router.post('/red3577-UPI/update-user-withdraw',updateWithdrawRequest);
+router.post('/red3577-UPI/add-subadmin-upi',addSubAdminUpi);
+router.get('/red3577-UPI/get-recharge-upi',getRechargeUpi);
+
 
 
 

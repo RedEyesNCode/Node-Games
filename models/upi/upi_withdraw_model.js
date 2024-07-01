@@ -9,6 +9,8 @@ const DataSchema = new mongoose.Schema({
     amount: { type: String, default: "" },
     user_id: { type: String, default: "" },
     status: { type: String, default: "PENDING" },
+    upi_payment_app : {type : String , default : "GPAY"},
+
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'UserData', // Reference to your User model

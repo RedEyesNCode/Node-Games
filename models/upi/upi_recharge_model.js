@@ -9,6 +9,7 @@ const DataSchema = new mongoose.Schema({
     upi_amount: { type: String, default: "" },
     upi_transaction_id: { type: String, default: "" },
     is_with_drawn: { type: Boolean, default: true },
+    upi_payment_app : {type : String , default : "GPAY"},
     timestamp: { type: Date, default: Date.now },
 
 });

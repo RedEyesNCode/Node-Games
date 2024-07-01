@@ -9,12 +9,12 @@ const DataSchema = new mongoose.Schema({
     merchant_name: { type: String, default: "" },
     merchant_address: { type: String, default: "" },
     collection_amount: { type: String, default: "" },
-    isActive: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true },
     timestamp: { type: Date, default: Date.now },
 
 });
 
 // Create the Mongoose model
-const UpiWithdrawModel = mongoose.model('UpiWithdrawModel', DataSchema); 
+const UpiAdminModel = mongoose.model('UpiAdminModel', DataSchema); 
 
-module.exports = UpiWithdrawModel;
+module.exports = UpiAdminModel;

@@ -1,3 +1,4 @@
+const UpiAdminModel = require("../models/upi/upi_admin_model");
 const UpiRechargeModel = require("../models/upi/upi_recharge_model");
 const UpiWithdrawModel = require("../models/upi/upi_withdraw_model");
 const UserData = require("../models/user_model");
@@ -55,6 +56,28 @@ const updateWithdrawRequest = async (req,res) => {
 
 }
 
+const getUserWithdrawRequest = async (req,res) => {
+
+    try{
+        const { userId} = req.body;
+
+        const withdrawList = await UpiWithdrawModel.find({user_id : userId});
+        if(withdrawList.length==0){
+
+            res.status(200).json({ status : 'success', code : 200, message : 'No Withdraw request found !' });
+        }else{
+            res.status(200).json({ status : 'success', code : 200, message : 'Withdraw Request Fetched ',data : withdrawList });
+
+
+        }
+
+    }catch(error){
+        console.log(error);
+    }
+
+
+}
+
 
 
 const addUserWithdrawRequest = async (req,res) => {
@@ -103,6 +126,41 @@ const addUserWithdrawRequest = async (req,res) => {
 }
 
 
+const getRechargeUpi = async (req,res) => {
+    try {
+        const rechargeUpis = await UpiAdminModel.find();
+        res.status(200).json({ status : 'success', code : 200, message : 'Recharge UPI',data : rechargeUpis });
+
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({ status : 'fail', code : 500, message : 'Internal Server Error' });
+
+        
+    }
+}
+
+
+
+
+const addSubAdminUpi = async (req,res) => {
+    try {
+        const { admin_upi_id , merchant_name , merchant_address} = req.body;
+
+        const subAdminUpi = new UpiAdminModel();
+        subAdminUpi.admin_upi_id = admin_upi_id;
+        subAdminUpi.merchant_address = merchant_address;
+        subAdminUpi.merchant_name = merchant_name;
+        subAdminUpi.collection_amount = "0";
+        await subAdminUpi.save();
+
+
+
+        res.status(200).json({status : 'success',code : 200, message : 'Sub Admin Upi Added Successfully !',data : subAdminUpi});
+    } catch (error) {
+        res.status(200).json({ status : 'fail', code : 500, message : 'Internal Server Error' });
+    }
+}
+
 
 const addAdminRecharge =  async(req,res) => {
     try {
@@ -123,7 +181,7 @@ const checkUserRecharge = async (req,res) => {
     try {
         const { admin_upi_id , amount , upi_transaction_id, userId} = req.body;
 
-        const recharge = await UpiRechargeModel.find({admin_upi_id, amount, upi_transaction_id , is_with_drawn = false}); // Assuming data from the request matches the schema
+        const recharge = await UpiRechargeModel.find({admin_upi_id, amount, upi_transaction_id , is_with_drawn : false}); // Assuming data from the request matches the schema
         if(recharge.length==0){
             res.status(200).json({ status : 'fail', code : 400, message : 'Recharge Not Found !' });
 
@@ -157,3 +215,5 @@ function makeString(length) {
     }
     return result;
 }
+
+module.exports = {checkUserRecharge,addSubAdminUpi,getRechargeUpi,addAdminRecharge,addUserWithdrawRequest,updateWithdrawRequest,getUserWithdrawRequest}
