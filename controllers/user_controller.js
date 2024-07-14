@@ -49,6 +49,9 @@ const getAllUserGeneralTransactions = async (req,res) => {
 
 }
 
+
+
+
 const getAllUserBetTransactions = async (req,res) => {
 
     try {
@@ -255,27 +258,28 @@ const updateWallet = async(req,res) => {
 const deleteUser = async(req,res) => {
     try{
         const {userId} = req.body;
-        const user = await UserData.findByIdAndDelete(userId);
+        const user = await UserData.findById(userId);
         if(user==null){
-            res.status(200).json({
+             return res.status(200).json({
+               status: "200",
+               code: 200,
+               message: "User not found  !",
+             });
+          
+
+        }else{
+            await UserData.findByIdAndDelete(userId);
+
+              return res.status(200).json({
                 status: "200",
                 code: 200,
                 message: "User Deleted Successfully  !",
-                
-            });
-
-        }else{
-            res.status(200).json({
-                status: "200",
-                code: 200,
-                message: "User not found  !",
-                
-            });
+              });
 
         }
     }catch(error){
         console.log(error);
-        res.status(200).json({
+        return res.status(200).json({
             status: "200",
             code: 200,
             message: "Internal Server Error !",
@@ -292,10 +296,10 @@ const deleteUser = async(req,res) => {
 const updateUser = async(req,res) => {
     try{
 
-        const {userId} = req.body;
-        const user = await UserData.findById(userId);
+        const {_id} = req.body;
+        const user = await UserData.findById(_id);
         if(user==null){
-            res.status(200).json({
+            return res.status(200).json({
                 status: "200",
                 code: 200,
                 message: "User not found  !",
@@ -304,7 +308,7 @@ const updateUser = async(req,res) => {
 
         }
         const updatedUser = await user.save(req.body);
-        res.status(200).json({
+        return res.status(200).json({
             status: "200",
             code: 200,
             message: "Updated user successfully !",
@@ -314,12 +318,12 @@ const updateUser = async(req,res) => {
 
     }catch(error){
         console.log(error);
-        res.status(200).json({
+        return res.status(200).json({
             status: "400",
             code: 400,
             message: "Internal Server error ",
             
-        });
+        }); 
 
     }
 

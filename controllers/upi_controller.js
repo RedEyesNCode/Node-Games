@@ -6,6 +6,45 @@ const UserData = require("../models/user_model");
 
 
 
+const getAllWithdrawRequests = async (req,res) => {
+    try{
+
+        const withdrawTable = await UpiWithdrawModel.find();
+        if(withdrawTable.length===0){
+            return res.status(200).json({ status : 'fail', code : 400, message : 'Withdraw Record Not Found ' });
+        }else{
+            return res
+              .status(200)
+              .json({
+                status: "success",
+                code: 400,
+                message: "All Withdraw Records ",
+                data : withdrawTable,
+
+              });
+
+        }
+
+
+    }catch(error){
+        console.log(error);
+        return res
+          .status(200)
+          .json({
+            status: "fail",
+            code: 200,
+            message: "Internal Server Error",
+          });
+
+
+    }
+
+
+}
+
+
+
+
 const updateWithdrawRequest = async (req,res) => {
 
     try{
@@ -216,4 +255,4 @@ function makeString(length) {
     return result;
 }
 
-module.exports = {checkUserRecharge,addSubAdminUpi,getRechargeUpi,addAdminRecharge,addUserWithdrawRequest,updateWithdrawRequest,getUserWithdrawRequest}
+module.exports = {checkUserRecharge,getAllWithdrawRequests,addSubAdminUpi,getRechargeUpi,addAdminRecharge,addUserWithdrawRequest,updateWithdrawRequest,getUserWithdrawRequest}
